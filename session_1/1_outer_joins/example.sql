@@ -15,3 +15,4 @@ FROM
 Students JOIN Department 
 ON Students.department_id = Department.id
 ORDER BY department;
+
