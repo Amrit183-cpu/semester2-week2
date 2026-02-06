@@ -111,11 +111,20 @@ def view_student_by_course(db):
 
 # Have a go at writing this function!
 def review_student_numbers(db):
+    #Print the number of students registered for each course.    
+    #:param db: Database object to query
+    ## is this correct?
+    
+    query = '''
+        select Courses.name, count(Students.id)
+        from StudentCourses join Students on StudentCourses.student_id = Students.id,
+        Courses on StudentCourses.course_id = Courses.id
+        where Courses.name=?
+        group by Courses.name;
     '''
-    Print the number of students registered for each course.    
-    :param db: Database object to query
-    '''
-    pass
+    cursor = db.execute(query)
+    for num_of_students in cursor:
+        print(f"Course name: {num_of_students}")
 
 def main():
 
