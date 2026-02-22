@@ -23,17 +23,18 @@ def customer_tickets(conn, customer_id):
     conn = sqlite3.connect("tickets.db") 
     cursor = conn.cursor()
 
+                   
     cursor.execute('''select films.title, screenings.screen, tickets.price
-                   from screenings join tickets on screenings.screening_id = tickets.screening_id,
-                    films on films.film_id = screenings.film_id
-                   where tickets.customer_id ?  (customer_id,) 
-                   order by films.title asc''') 
-    
+                   from screenings join films on screenings.film_id = films.film_id,
+                   tickets on screenings.screening_id = tickets.screening_id
+                   where tickets.customer_id = ?
+                   order by films.title asc''', (customer_id,) )
    
     
     #the query above selected the film title, screen and prices of the tickets
     #joined the tables screenings to films and tickets (as it is the middle table)
     #ordered in alphabetical from a-z
+    #passed in customer_id at the end
     
     y = cursor.fetchall() #fetch all rows
     return y
