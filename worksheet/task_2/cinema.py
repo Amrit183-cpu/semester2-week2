@@ -20,7 +20,7 @@ def customer_tickets(conn, customer_id):
     Include only tickets purchased by the given customer_id.
     Order results by film title alphabetically.
     """
-    conn = sqlite3.connect("tickets.db") 
+    #conn = sqlite3.connect("tickets.db") this conn is not needed
     cursor = conn.cursor()
 
                    
@@ -48,11 +48,10 @@ def screening_sales(conn):
     Order results by tickets_sold descending.
     """
     
-    conn = sqlite3.connect("tickets.db")
     cursor = conn.cursor()
 
     cursor.execute('''select screenings.screening_id, films.title, count(tickets.ticket_id) as num_of_tickets
-                   from screenings left join films on screenings.film_id = films.film_id, tickets on screenings.screening_id = tickets.screening_id
+                   from screenings left join tickets on screenings.screening_id = tickets.screening_id, films on screenings.film_id = films.film_id
                    group by screenings.screening_id
                    order by num_of_tickets desc''')
 
@@ -75,7 +74,6 @@ def top_customers_by_spend(conn, limit):
     Limit the number of rows returned to `limit`.
     """
     
-    conn = sqlite3.connect("tickets.db")
     cursor = conn.cursor()
 
     cursor.execute("""select customers.customer_name, sum(tickets.price) 
